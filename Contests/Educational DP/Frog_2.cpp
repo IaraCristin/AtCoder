@@ -7,9 +7,10 @@ using namespace std;
 
 
 int main(){
-    //get N
-    int n;
-    cin >> n;
+    //get N and K
+    int n,k;
+
+    cin >> n >> k;
 
     //get heights
     vector<int> heights(n,0); //Initialize vector with all 0
@@ -18,17 +19,19 @@ int main(){
         cin >> heights[i];   
     }
 
+    int max_cost = 1e9;
+    vector<int> min_cost(n,max_cost);
+    min_cost[0] = 0;
 
-    //This is a modification of the first frog
-    vector<int> min_cost(n,0);
-    min_cost[1] = abs(heights[1]-heights[0]);
-
-    //Then we get the minimum cost to get to the i stone by adding the previous min cost of the i-1 or the i-2 stone to the cost of the i stone
-    for (int i = 2; i < n; i++)
+    for(int i = 1; i < n; i++)
     {
-        min_cost[i] = min(  min_cost[i-1] + abs(heights[i] - heights[i-1]),     //Cost of jumping from i-1 stone to i stone
-                            min_cost[i-2] + abs(heights[i] - heights[i-2]));    //Cost of jumping from i-1 stone to i stone
+        for (int j = 1; j <= k && i-j >= 0; j++)
+        {
+            min_cost[i] = min(min_cost[i],min_cost[i-j] + abs(heights[i] - heights[i-j]));
+        }
+        
     }
+    
     
     //And finally, we give the end result of the last cost
     cout << min_cost[n-1];
