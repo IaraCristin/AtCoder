@@ -36,7 +36,7 @@ ll f(int i, int c){
     ll with_item;
     if (c - items[i].weight >= 0)
     {
-        with_item = f(i+1,c - items[i].weight);
+        with_item = items[i].value + f(i+1,c - items[i].weight);
     } else {
         with_item = 0;
     }
